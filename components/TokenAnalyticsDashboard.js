@@ -1,11 +1,7 @@
 // ファイル: /components/TokenAnalyticsDashboard.js
 import React, { useState } from "react";
-import {
-  PieChart, Pie, Cell, Tooltip as PieTooltip, ResponsiveContainer as PieContainer
-} from "recharts";
-import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as LineTooltip, ResponsiveContainer as LineContainer
-} from "recharts";
+import { PieChart, Pie, Cell, Tooltip as PieTooltip, ResponsiveContainer as PieContainer } from "recharts";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as LineTooltip, ResponsiveContainer as LineContainer } from "recharts";
 
 const COLORS = ["#4F46E5", "#6366F1", "#818CF8", "#A5B4FC", "#C7D2FE"];
 
@@ -16,8 +12,10 @@ export default function TokenAnalyticsDashboard() {
   const [relatedTokens, setRelatedTokens] = useState([]);
   const [relatedNFTs, setRelatedNFTs] = useState([]);
   const [gptComment, setGptComment] = useState("");
+  const [inputAddress, setInputAddress] = useState("");
 
   const fetchDummyData = () => {
+    console.log("検索されたトークンアドレス:", inputAddress);
     setLoading(true);
     setTimeout(() => {
       setHolderData([
@@ -53,13 +51,23 @@ export default function TokenAnalyticsDashboard() {
   return (
     <div>
       <h1 className="text-xl font-bold mb-4">OSHIスキャン簡易版</h1>
-      <button
-        className="bg-indigo-600 text-white px-4 py-2 rounded"
-        onClick={fetchDummyData}
-        disabled={loading}
-      >
-        {loading ? "読み込み中..." : "分析スタート"}
-      </button>
+
+      <div className="flex items-center gap-2 mb-4">
+        <input
+          type="text"
+          className="border border-gray-300 px-3 py-2 rounded w-full"
+          placeholder="トークンアドレスを入力してください"
+          value={inputAddress}
+          onChange={(e) => setInputAddress(e.target.value)}
+        />
+        <button
+          className="bg-indigo-600 text-white px-4 py-2 rounded"
+          onClick={fetchDummyData}
+          disabled={loading || inputAddress.length === 0}
+        >
+          {loading ? "読み込み中..." : "分析スタート"}
+        </button>
+      </div>
 
       {holderData.length > 0 && (
         <>
@@ -103,3 +111,4 @@ export default function TokenAnalyticsDashboard() {
     </div>
   );
 }
+       
