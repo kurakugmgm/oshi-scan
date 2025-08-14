@@ -1,0 +1,4 @@
+// ファイル: vercel.json
+{
+  "framework": "nextjs"
+}
