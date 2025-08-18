@@ -12,10 +12,10 @@ export default function TokenAnalyticsDashboard() {
   const [relatedTokens, setRelatedTokens] = useState([]);
   const [relatedNFTs, setRelatedNFTs] = useState([]);
   const [gptComment, setGptComment] = useState("");
-  const [inputAddress, setInputAddress] = useState("");
+  const [chain, setChain] = useState("polygon");
+  const [type, setType] = useState("erc20");
 
   const fetchDummyData = () => {
-    console.log("検索されたトークンアドレス:", inputAddress);
     setLoading(true);
     setTimeout(() => {
       setHolderData([
@@ -52,22 +52,35 @@ export default function TokenAnalyticsDashboard() {
     <div>
       <h1 className="text-xl font-bold mb-4">OSHIスキャン簡易版</h1>
 
-      <div className="flex items-center gap-2 mb-4">
-        <input
-          type="text"
-          className="border border-gray-300 px-3 py-2 rounded w-full"
-          placeholder="トークンアドレスを入力してください"
-          value={inputAddress}
-          onChange={(e) => setInputAddress(e.target.value)}
-        />
-        <button
-          className="bg-indigo-600 text-white px-4 py-2 rounded"
-          onClick={fetchDummyData}
-          disabled={loading || inputAddress.length === 0}
-        >
-          {loading ? "読み込み中..." : "分析スタート"}
-        </button>
+      <div className="mb-4 space-y-2">
+        <div>
+          <label className="font-medium mr-2">チェーン:</label>
+          <select value={chain} onChange={(e) => setChain(e.target.value)} className="border p-1 rounded">
+            <option value="polygon">Polygon</option>
+            <option value="ethereum">Ethereum</option>
+            <option value="solana">Solana</option>
+          </select>
+        </div>
+        <div>
+          <label className="font-medium mr-2">アセット種別:</label>
+          <label className="mr-4">
+            <input type="radio" value="erc20" checked={type === 'erc20'} onChange={() => setType('erc20')} className="mr-1" />
+            トークン（ERC20）
+          </label>
+          <label>
+            <input type="radio" value="nft" checked={type === 'nft'} onChange={() => setType('nft')} className="mr-1" />
+            NFT
+          </label>
+        </div>
       </div>
+
+      <button
+        className="bg-indigo-600 text-white px-4 py-2 rounded"
+        onClick={fetchDummyData}
+        disabled={loading}
+      >
+        {loading ? "読み込み中..." : "分析スタート"}
+      </button>
 
       {holderData.length > 0 && (
         <>
@@ -111,4 +124,3 @@ export default function TokenAnalyticsDashboard() {
     </div>
   );
 }
-       
