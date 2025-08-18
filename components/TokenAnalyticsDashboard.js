@@ -14,8 +14,10 @@ export default function TokenAnalyticsDashboard() {
   const [gptComment, setGptComment] = useState("");
   const [chain, setChain] = useState("polygon");
   const [type, setType] = useState("erc20");
+  const [tokenAddress, setTokenAddress] = useState("");
 
   const fetchDummyData = () => {
+    if (!tokenAddress) return alert("トークンアドレスを入力してください。");
     setLoading(true);
     setTimeout(() => {
       setHolderData([
@@ -71,6 +73,16 @@ export default function TokenAnalyticsDashboard() {
             <input type="radio" value="nft" checked={type === 'nft'} onChange={() => setType('nft')} className="mr-1" />
             NFT
           </label>
+        </div>
+        <div>
+          <label className="font-medium mr-2">トークンアドレス:</label>
+          <input
+            type="text"
+            value={tokenAddress}
+            onChange={(e) => setTokenAddress(e.target.value)}
+            placeholder="0x..."
+            className="border p-1 rounded w-full"
+          />
         </div>
       </div>
 
